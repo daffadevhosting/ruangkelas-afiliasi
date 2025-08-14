@@ -1,0 +1,32 @@
+---
+layout: default
+title: Login
+---
+<div class="max-w-md mx-auto px-4 py-16">
+  <h1 class="text-3xl font-extrabold mb-6">Login</h1>
+  <form id="loginForm" class="space-y-4">
+    <div>
+      <label class="text-sm font-medium">Email</label>
+      <input type="email" name="email" class="mt-1 w-full rounded-xl border-neutral-300" required />
+    </div>
+    <div>
+      <label class="text-sm font-medium">Password</label>
+      <input type="password" name="password" class="mt-1 w-full rounded-xl border-neutral-300" required />
+    </div>
+    <button class="btn btn-primary w-full" type="submit">Masuk</button>
+  </form>
+  <p class="text-sm text-neutral-500 mt-4">Akun dibuat manual oleh admin. Tidak ada pendaftaran publik.</p>
+</div>
+<script>
+  document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = e.target.email.value.trim();
+    const password = e.target.password.value;
+    try {
+      await firebase.auth().signInWithEmailAndPassword(email, password);
+      location.href = '/belajar/';
+    } catch (err) {
+      alert(err.message || 'Login gagal');
+    }
+  });
+</script>
