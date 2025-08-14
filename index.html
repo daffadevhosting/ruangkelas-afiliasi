@@ -27,15 +27,21 @@ title: Belajar Afiliasi
     </div>
   </div>
 </section>
-{% include landing-benefits.html %}
+
+<section class="max-w-6xl mx-auto px-4 pb-24">
+  <h2 class="text-2xl font-bold mb-6">Kenapa pilih platform ini?</h2>
+  <div class="grid md:grid-cols-3 gap-6">
+    <div class="card"><h3 class="font-bold mb-2">Aman & Terkontrol</h3><p>Login tanpa registrasi publik. Akses diatur admin.</p></div>
+    <div class="card"><h3 class="font-bold mb-2">Materi Padat</h3><p>List video + ebook terstruktur, fokus untuk praktek.</p></div>
+    <div class="card"><h3 class="font-bold mb-2">Cepat</h3><p>Jekyll + Tailwind, deploy ke Cloudflare Pages.</p></div>
+  </div>
+</section>
+
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-  gsap.from(".benefit-card", {
-    y: 50,
-    opacity: 0,
-    duration: 0.8,
-    stagger: 0.2,
-    ease: "power2.out"
+  document.addEventListener('DOMContentLoaded', () => {
+    if (window.gsap) {
+      gsap.from('h1', {y: 20, opacity: 0, duration: 0.6});
+      gsap.from('.card', {y: 20, opacity: 0, duration: 0.6, stagger: 0.1});
+    }
   });
-});
 </script>
