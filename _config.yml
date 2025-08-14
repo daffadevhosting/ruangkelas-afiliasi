@@ -1,14 +1,18 @@
 title: "Afiliasi Belajar"
 baseurl: ""
 url: ""
+
 markdown: kramdown
+
 plugins:
   - jekyll-feed
   - jekyll-sitemap
+  
 collections:
   lessons:
     output: true
     permalink: /belajar/:name/
+    
 include:
   - assets
   - node_modules
