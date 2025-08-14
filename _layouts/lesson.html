@@ -1,0 +1,73 @@
+---
+layout: app
+---
+<article class="prose max-w-none">
+  <h1 class="mb-2 text-3xl font-extrabold">{{ page.title }}</h1>
+  <p class="text-neutral-600 -mt-2 mb-6">Level: {{ page.level | default: 'Semua' }}</p>
+</article>
+
+<div class="grid md:grid-cols-3 gap-6">
+  <div class="md:col-span-2 card">
+    <div id="videoWrap" class="aspect-video rounded-xl overflow-hidden border border-black/10">
+      <!-- Video player dimuat setelah signed URL didapat -->
+      <div id="videoLoading" class="p-6">Memuat video…</div>
+    </div>
+  </div>
+  <aside class="card">
+    <h3 class="font-bold mb-3">Ebook</h3>
+    <div id="ebookWrap" class="space-y-3">
+      <div id="ebookLoading">Memuat ebook…</div>
+    </div>
+  </aside>
+</div>
+
+<script>
+  // Ambil slug dari path
+  const slug = location.pathname.replace(/\/$/, '').split('/').pop();
+  document.addEventListener('auth-ready', async () => {
+    const user = window.__auth?.user;
+    if (!user) return; // redirect sudah di-handle di auth.js
+
+    // Ambil metadata lesson dari Firestore
+    const db = firebase.firestore();
+    const docRef = db.collection('lessons').doc(slug);
+    const snap = await docRef.get();
+    if (!snap.exists) {
+      document.querySelector('#videoWrap').innerHTML = '<div class="p-6">Lesson tidak ditemukan.</div>';
+      return;
+    }
+    const data = snap.data();
+
+    // Minta signed URL dari Worker untuk video & ebook
+    const idToken = await user.getIdToken();
+    const workerOrigin = '{{ site.worker_origin | default: "" }}'; // set di _config.yml jika perlu
+
+    const [videoRes, ebookRes] = await Promise.all([
+      fetch(`${workerOrigin}/signed-url?path=${encodeURIComponent(data.videoPath)}`, {
+        headers: { Authorization: `Bearer ${idToken}` }
+      }),
+      fetch(`${workerOrigin}/signed-url?path=${encodeURIComponent(data.ebookPath)}`, {
+        headers: { Authorization: `Bearer ${idToken}` }
+      })
+    ]);
+
+    if (videoRes.ok) {
+      const { url } = await videoRes.json();
+      const html = `<video controls class="w-full h-full" src="${url}"></video>`;
+      document.querySelector('#videoWrap').innerHTML = html;
+    } else {
+      document.querySelector('#videoWrap').innerHTML = '<div class="p-6">Gagal memuat video.</div>';
+    }
+
+    if (ebookRes.ok) {
+      const { url } = await ebookRes.json();
+      const html = `
+        <a class="btn btn-primary w-full" href="${url}" target="_blank" rel="noopener">Buka / Unduh Ebook</a>
+        <iframe class="w-full h-96 border rounded-xl" src="${url}"></iframe>
+      `;
+      document.querySelector('#ebookWrap').innerHTML = html;
+    } else {
+      document.querySelector('#ebookWrap').innerHTML = '<div>Gagal memuat ebook.</div>';
+    }
+  });
+</script>
