@@ -1,0 +1,41 @@
+---
+layout: default
+title: Belajar Afiliasi — Mewah tapi Sederhana
+---
+<section class="relative overflow-hidden">
+  <div class="absolute inset-0 bg-gradient-to-b from-white via-neutral-50 to-white"></div>
+  <div class="max-w-6xl mx-auto px-4 pt-16 pb-24 relative">
+    <div class="grid md:grid-cols-2 gap-10 items-center">
+      <div>
+        <h1 class="text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.05]">
+          Webapp Pembelajaran <span class="bg-black text-white px-3 py-1 rounded-2xl">Afiliasi</span>
+        </h1>
+        <p class="mt-6 text-lg text-neutral-600 max-w-prose">
+          Materi fokus, langsung praktik. Video & ebook dikurasi, akses aman via akun yang disediakan admin.
+        </p>
+        <div class="mt-8 flex items-center gap-3">
+          <a href="/belajar/" class="btn btn-primary">Mulai Belajar</a>
+          <a href="/login" class="btn btn-ghost">Login</a>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <div class="aspect-video rounded-xl border border-black/10 bg-gradient-to-br from-neutral-100 to-white"></div>
+          <p class="mt-4 text-sm text-neutral-500">UI simple, responsif, dengan animasi halus.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% include landing-benefits.html %}
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  gsap.from(".benefit-card", {
+    y: 50,
+    opacity: 0,
+    duration: 0.8,
+    stagger: 0.2,
+    ease: "power2.out"
+  });
+});
+</script>
