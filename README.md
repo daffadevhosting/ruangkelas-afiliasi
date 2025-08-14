@@ -27,3 +27,16 @@
 └─ lessons/
    └─ {{slug}}.html       # Dibangun via Jekyll collection `lessons` (protected)
 ```
+### ToDo:
+
+```sh
+git clone https://github.com/daffadevhosting/ruangkelas-afiliasi.git
+cd ruangkelas-afiliasi
+```
+then run
+```sh
+npm install
+bundle install
+npm run build
+npm run serve
+```
